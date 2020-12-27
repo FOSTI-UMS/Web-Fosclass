@@ -6,16 +6,15 @@ Feature: Edit activities in main menu block
 
   @javascript
   Scenario: Edit name of acitivity in-place in site main menu block
-    Given the following "activity" exists:
-      | activity | forum                |
-      | course   | Acceptance test site |
-      | name     | My forum name        |
-      | idnumber | forum                |
-    And I log in as "admin"
+    Given I log in as "admin"
     And I am on site homepage
     And I navigate to "Turn editing on" in current page administration
     And I add the "Main menu" block
-    When I set the field "Edit title" in the "My forum name" "block_site_main_menu > Activity" to "New forum name"
+    When I add a "Forum" to section "0" and I fill the form with:
+      | Forum name | My forum name |
+    And I click on "Edit title" "link" in the "My forum name" activity in site main menu block
+    And I set the field "New name for activity My forum name" to "New forum name"
+    And I press key "13" in the field "New name for activity My forum name"
     Then I should not see "My forum name"
     And I should see "New forum name"
     And I follow "New forum name"

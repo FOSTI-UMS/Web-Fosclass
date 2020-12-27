@@ -225,8 +225,7 @@ class core_question_backup_testcase extends advanced_testcase {
         // Create a question.
         $questiongenerator = $this->getDataGenerator()->get_plugin_generator('core_question');
         $questioncategory = $questiongenerator->create_question_category();
-        $overrides = ['name' => 'Test question', 'category' => $questioncategory->id,
-                'createdby' => $user->id, 'modifiedby' => $user->id];
+        $overrides = ['category' => $questioncategory->id, 'createdby' => $user->id, 'modifiedby' => $user->id];
         $question = $questiongenerator->create_question('truefalse', null, $overrides);
 
         // Create a quiz and a questions.
@@ -262,7 +261,7 @@ class core_question_backup_testcase extends advanced_testcase {
         $rc->destroy();
 
         // Test the question author.
-        $questions = $DB->get_records('question', ['name' => 'Test question']);
+        $questions = $DB->get_records('question');
         $this->assertCount(1, $questions);
         $question3 = array_shift($questions);
         $this->assertEquals($user->id, $question3->createdby);
@@ -286,8 +285,7 @@ class core_question_backup_testcase extends advanced_testcase {
         // Create a question.
         $questiongenerator = $this->getDataGenerator()->get_plugin_generator('core_question');
         $questioncategory = $questiongenerator->create_question_category();
-        $overrides = ['name' => 'Test question', 'category' => $questioncategory->id,
-                'createdby' => $user->id, 'modifiedby' => $user->id];
+        $overrides = ['category' => $questioncategory->id, 'createdby' => $user->id, 'modifiedby' => $user->id];
         $question = $questiongenerator->create_question('truefalse', null, $overrides);
 
         // Create a quiz and a questions.
@@ -319,7 +317,7 @@ class core_question_backup_testcase extends advanced_testcase {
         $rc->destroy();
 
         // Test the question author.
-        $questions = $DB->get_records('question', ['name' => 'Test question']);
+        $questions = $DB->get_records('question');
         $this->assertCount(1, $questions);
         $question = array_shift($questions);
         $this->assertEquals($user->id, $question->createdby);
@@ -343,8 +341,7 @@ class core_question_backup_testcase extends advanced_testcase {
         // Create a question.
         $questiongenerator = $this->getDataGenerator()->get_plugin_generator('core_question');
         $questioncategory = $questiongenerator->create_question_category();
-        $overrides = ['name' => 'Test question', 'category' => $questioncategory->id,
-                'createdby' => $user->id, 'modifiedby' => $user->id];
+        $overrides = ['category' => $questioncategory->id, 'createdby' => $user->id, 'modifiedby' => $user->id];
         $question = $questiongenerator->create_question('truefalse', null, $overrides);
 
         // Create a quiz and a questions.
@@ -379,7 +376,7 @@ class core_question_backup_testcase extends advanced_testcase {
         $rc->destroy();
 
         // Test the question author.
-        $questions = $DB->get_records('question', ['name' => 'Test question']);
+        $questions = $DB->get_records('question');
         $this->assertCount(1, $questions);
         $question = array_shift($questions);
         $this->assertEquals($USER->id, $question->createdby);

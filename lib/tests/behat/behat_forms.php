@@ -693,21 +693,18 @@ class behat_forms extends behat_base {
         $xpathtarget = "//ul[@class='form-autocomplete-suggestions']//*[contains(concat('|', string(.), '|'),'|" . $item . "|')]";
 
         $this->execute('behat_general::i_click_on', [$xpathtarget, 'xpath_element']);
+
+        $this->execute('behat_general::i_press_key_in_element', ['13', 'body', 'xpath_element']);
     }
 
     /**
      * Open the auto-complete suggestions list (Assuming there is only one on the page.).
      *
-     * @Given I open the autocomplete suggestions list
-     * @Given I open the autocomplete suggestions list in the :container :containertype
+     * @Given /^I open the autocomplete suggestions list$/
      */
-    public function i_open_the_autocomplete_suggestions_list($container = null, $containertype = null) {
+    public function i_open_the_autocomplete_suggestions_list() {
         $csstarget = ".form-autocomplete-downarrow";
-        if ($container && $containertype) {
-            $this->execute('behat_general::i_click_on', [$csstarget, 'css_element', $container, $containertype]);
-        } else {
-            $this->execute('behat_general::i_click_on', [$csstarget, 'css_element']);
-        }
+        $this->execute('behat_general::i_click_on', [$csstarget, 'css_element']);
     }
 
     /**

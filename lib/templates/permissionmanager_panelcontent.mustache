@@ -27,18 +27,17 @@
 
     Context variables required for this template:
     * confirmation Confirmation text
-    * roles array of role details. Note: in this array, rolename must have been
-          prepared for output with format_string, or more likely one of the role API functions like role_fix_names.
+    * roles array of role details
 
     Example context (json):
     { "message": "Do you really want to remove Non-editing teacher from the list of allowed roles for capability View added and updated modules in recent activity block?",
-      "roles": [{"roleid": 1, "rolename": "Manager", "disabled": "disabled"}]}
+      "roles": [{"roleid": 1, "rolename": "manager", "disabled":"disabled"}]}
 }}
 <div class="popup_content" style="text-align:center;">
     {{message}} <hr/>
     <div class="role_buttons">
         {{#roles}}
-            <button type="button" class="btn btn-secondary mb-1" data-role-id="{{roleid}}" {{disabled}}>{{{rolename}}}</button>
+            <input type="button" value="{{rolename}}" class="btn btn-secondary mb-1" data-role-id="{{roleid}}" {{disabled}}/>
         {{/roles}}
     </div>
 </div>

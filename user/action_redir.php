@@ -23,7 +23,6 @@
  */
 
 require_once("../config.php");
-require_once($CFG->dirroot . '/course/lib.php');
 
 $formaction = required_param('formaction', PARAM_LOCALURL);
 $id = required_param('id', PARAM_INT);
@@ -79,8 +78,7 @@ if ($formaction == 'bulkchange.php') {
 
     if (empty($plugin) AND $operationname == 'download_participants') {
         // Check permissions.
-        $pagecontext = ($course->id == SITEID) ? context_system::instance() : $context;
-        if (course_can_view_participants($pagecontext)) {
+        if (has_capability('moodle/course:manageactivities', $context)) {
             $plugins = core_plugin_manager::instance()->get_plugins_of_type('dataformat');
             if (isset($plugins[$dataformat])) {
                 if ($plugins[$dataformat]->is_enabled()) {

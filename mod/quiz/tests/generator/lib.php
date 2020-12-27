@@ -75,7 +75,7 @@ class mod_quiz_generator extends testing_module_generator {
             'timecreated'            => time(),
             'timemodified'           => time(),
             'timelimit'              => 0,
-            'overduehandling'        => 'autosubmit',
+            'overduehandling'        => 'autoabandon',
             'graceperiod'            => 86400,
             'quizpassword'           => '',
             'subnet'                 => '',

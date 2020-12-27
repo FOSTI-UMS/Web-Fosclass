@@ -49,7 +49,7 @@ class helper {
             /** @var \paygw_paypal\gateway $classname */
             $classname = '\paygw_' . $plugin . '\gateway';
 
-            $currencies = array_merge($currencies, component_class_callback($classname, 'get_supported_currencies', [], []));
+            $currencies += component_class_callback($classname, 'get_supported_currencies', [], []);
         }
 
         $currencies = array_unique($currencies);

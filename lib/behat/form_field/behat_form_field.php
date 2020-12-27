@@ -25,8 +25,8 @@
 
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 
-use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Session;
+use Behat\Mink\Session as Session,
+    Behat\Mink\Element\NodeElement as NodeElement;
 
 /**
  * Representation of a form field.
@@ -38,10 +38,7 @@ use Behat\Mink\Session;
  * @copyright  2012 David Monllaó
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class behat_form_field implements behat_session_interface {
-
-    // All of the functionality of behat_base is shared with form fields via the behat_session_trait trait.
-    use behat_session_trait;
+class behat_form_field {
 
     /**
      * @var Session Behat session.
@@ -57,16 +54,6 @@ class behat_form_field implements behat_session_interface {
      * @var string The field's locator.
      */
     protected $fieldlocator = false;
-
-    /**
-     * Returns the Mink session.
-     *
-     * @param   string|null $name name of the session OR active session will be used
-     * @return  \Behat\Mink\Session
-     */
-    public function getSession($name = null) {
-        return $this->session;
-    }
 
 
     /**

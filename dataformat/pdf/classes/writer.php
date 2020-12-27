@@ -90,7 +90,7 @@ class writer extends \core\dataformat\base {
         $this->colwidth = $pagewidth / count($columns);
         $this->columns = $columns;
 
-        $this->print_heading($this->pdf);
+        $this->print_heading();
     }
 
     /**
@@ -137,12 +137,10 @@ class writer extends \core\dataformat\base {
             $pdf2->startTransaction();
             $numpages = $pdf2->getNumPages();
             $pdf2->AddPage('L');
-            $this->print_heading($pdf2);
             $pdf2->writeHTMLCell($this->colwidth, 0, '', '', $cell, 1, 1, false, true, 'L');
             $pagesadded = $pdf2->getNumPages() - $numpages;
-            $margins = $pdf2->getMargins();
-            $pageheight = $pdf2->getPageHeight() - $margins['top'] - $margins['bottom'];
-            $cellheight = ($pagesadded - 1) * $pageheight + $pdf2->getY() - $margins['top'] - $this->get_heading_height();
+            $pageheight = $pdf2->getPageHeight() - $pdf2->getMargins()['top'] - $pdf2->getMargins()['bottom'];
+            $cellheight = ($pagesadded - 1) * $pageheight + $pdf2->getLastH();
             $rowheight = max($rowheight, $cellheight);
             $pdf2->rollbackTransaction();
         }
@@ -151,7 +149,7 @@ class writer extends \core\dataformat\base {
         if ($this->pdf->getNumPages() > 1 &&
                 ($this->pdf->GetY() + $rowheight + $margins['bottom'] > $this->pdf->getPageHeight())) {
             $this->pdf->AddPage('L');
-            $this->print_heading($this->pdf);
+            $this->print_heading();
         }
 
         // Get the last key for this record.
@@ -188,36 +186,25 @@ class writer extends \core\dataformat\base {
     }
 
     /**
-     * Prints the heading row for a given PDF.
-     *
-     * @param \pdf $pdf A pdf to print headings in
+     * Prints the heading row.
      */
-    private function print_heading(\pdf $pdf) {
-        $fontfamily = $pdf->getFontFamily();
-        $fontstyle = $pdf->getFontStyle();
-        $pdf->SetFont($fontfamily, 'B');
+    private function print_heading() {
+        $fontfamily = $this->pdf->getFontFamily();
+        $fontstyle = $this->pdf->getFontStyle();
+        $this->pdf->SetFont($fontfamily, 'B');
+        $rowheight = 0;
+        foreach ($this->columns as $columns) {
+            $rowheight = max($rowheight, $this->pdf->getStringHeight($this->colwidth, $columns, false, true, '', 1));
+        }
 
         $total = count($this->columns);
         $counter = 1;
         foreach ($this->columns as $columns) {
             $nextposition = ($counter == $total) ? 1 : 0;
-            $pdf->Multicell($this->colwidth, $this->get_heading_height(), $columns, 1, 'C', true, $nextposition);
+            $this->pdf->Multicell($this->colwidth, $rowheight, $columns, 1, 'C', true, $nextposition);
             $counter++;
         }
 
-        $pdf->SetFont($fontfamily, $fontstyle);
-    }
-
-    /**
-     * Returns the heading height.
-     *
-     * @return int
-     */
-    private function get_heading_height() {
-        $height = 0;
-        foreach ($this->columns as $columns) {
-            $height = max($height, $this->pdf->getStringHeight($this->colwidth, $columns, false, true, '', 1));
-        }
-        return $height;
+        $this->pdf->SetFont($fontfamily, $fontstyle);
     }
 }

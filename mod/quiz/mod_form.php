@@ -378,13 +378,11 @@ class mod_quiz_mod_form extends moodleform_mod {
             list($identifier, $component) = $string;
 
             $label = get_string($identifier, $component);
-            $group[] = $mform->createElement('html', html_writer::start_div('review_option_item'));
-            $el = $mform->createElement('checkbox', $field . $whenname, '', $label);
             if ($withhelp) {
-                $el->_helpbutton = $OUTPUT->render(new help_icon($identifier, $component));
+                $label .= ' ' . $OUTPUT->help_icon($identifier, $component);
             }
-            $group[] = $el;
-            $group[] = $mform->createElement('html', html_writer::end_div());
+
+            $group[] = $mform->createElement('checkbox', $field . $whenname, '', $label);
         }
         $mform->addGroup($group, $whenname . 'optionsgrp',
                 get_string('review' . $whenname, 'quiz'), null, false);

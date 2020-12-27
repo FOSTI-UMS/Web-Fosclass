@@ -266,8 +266,9 @@ echo html_writer::end_tag('div');
 echo html_writer::end_tag('form');
 
 // Output the technical info.
-print_collapsible_region_start('', 'techinfo', get_string('technicalinfo', 'question'),
-        'core_question_preview_techinfo_collapsed', true, false, $OUTPUT->help_icon('technicalinfo', 'question'));
+print_collapsible_region_start('', 'techinfo', get_string('technicalinfo', 'question') .
+        $OUTPUT->help_icon('technicalinfo', 'question'),
+        'core_question_preview_techinfo_collapsed', true);
 foreach ($technical as $info) {
     echo html_writer::tag('p', $info, array('class' => 'notifytiny'));
 }

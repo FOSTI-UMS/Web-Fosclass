@@ -66,10 +66,7 @@ if ($ADMIN->fulltree) {
         $student = get_archetype_roles('student');
         $student = reset($student);
         $settings->add(new admin_setting_configselect('enrol_paypal/roleid',
-            get_string('defaultrole', 'enrol_paypal'),
-            get_string('defaultrole_desc', 'enrol_paypal'),
-            $student->id ?? null,
-            $options));
+            get_string('defaultrole', 'enrol_paypal'), get_string('defaultrole_desc', 'enrol_paypal'), $student->id, $options));
     }
 
     $settings->add(new admin_setting_configduration('enrol_paypal/enrolperiod',

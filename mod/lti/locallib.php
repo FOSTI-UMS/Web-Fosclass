@@ -1525,6 +1525,8 @@ function content_item_to_form(object $tool, object $typeconfig, object $item) : 
         }
         $config->instructorcustomparameters = implode("\n", $customparameters);
     }
+    // Including a JSON version of the form data to support adding many items in one submit.
+    $config->contentitemjson = json_encode($item);
     return $config;
 }
 
