@@ -543,9 +543,11 @@ function(
 
         // Filter out all pagination options which are too large for the amount of courses user is enrolled in.
         var totalCourseCount = parseInt(root.find(Selectors.courseView.region).attr('data-totalcoursecount'), 10);
-        itemsPerPage = itemsPerPage.filter(function(pagingOption) {
-            return pagingOption.value < totalCourseCount || pagingOption.value === 0;
-        });
+        if (totalCourseCount) {
+            itemsPerPage = itemsPerPage.filter(function(pagingOption) {
+                return pagingOption.value < totalCourseCount;
+            });
+        }
 
         var filters = getFilterValues(root);
         var config = $.extend({}, DEFAULT_PAGED_CONTENT_CONFIG);
@@ -600,8 +602,7 @@ function(
                                 pageCourses = $.merge(loadedPages[currentPage].courses, courses.slice(0, nextPageStart));
                             }
                         } else {
-                            // When the page limit is zero, there is only one page of courses, no start for next page.
-                            nextPageStart = pageData.limit || false;
+                            nextPageStart = pageData.limit;
                             pageCourses = (pageData.limit > 0) ? courses.slice(0, pageData.limit) : courses;
                         }
 
@@ -610,8 +611,8 @@ function(
                             courses: pageCourses
                         };
 
-                        // Set up the next page (if there is more than one page).
-                        var remainingCourses = nextPageStart !== false ? courses.slice(nextPageStart, courses.length) : [];
+                        // Set up the next page
+                        var remainingCourses = nextPageStart ? courses.slice(nextPageStart, courses.length) : [];
                         if (remainingCourses.length) {
                             loadedPages[currentPage + 1] = {
                                 courses: remainingCourses

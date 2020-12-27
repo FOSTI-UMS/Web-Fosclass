@@ -101,7 +101,7 @@
 }
 
 .gradingform_rubric .criterion .description {
-    min-width: 150px;
+    width: 150px;
     font-weight: bold;
 }
 

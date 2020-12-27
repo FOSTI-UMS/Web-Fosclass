@@ -359,7 +359,6 @@ class qtype_numerical extends question_type {
         $question->unitdisplay = $questiondata->options->showunits;
         $question->unitgradingtype = $questiondata->options->unitgradingtype;
         $question->unitpenalty = $questiondata->options->unitpenalty;
-        $question->unitsleft = $questiondata->options->unitsleft;
         $question->ap = $this->make_answer_processor($questiondata->options->units,
                 $questiondata->options->unitsleft);
     }

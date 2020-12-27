@@ -120,11 +120,16 @@
         {{^activepagenumber}}
             data-active-page-number="1"
         {{/activepagenumber}}
-        {{#itemsperpage}}
-            {{#active}}
-                data-items-per-page="{{value}}"
-            {{/active}}
-        {{/itemsperpage}}
+        {{#showitemsperpageselector}}
+            {{#itemsperpage}}
+                {{#active}}
+                    data-items-per-page="{{value}}"
+                {{/active}}
+            {{/itemsperpage}}
+        {{/showitemsperpageselector}}
+        {{^showitemsperpageselector}}
+            data-items-per-page="{{itemsperpage}}"
+        {{/showitemsperpageselector}}
         {{#arialabels.paginationnav}}
             aria-label="{{.}}"
         {{/arialabels.paginationnav}}

@@ -45,10 +45,6 @@ class enrol_fee_plugin extends enrol_plugin {
             $currencies[$c] = new lang_string($c, 'core_currencies');
         }
 
-        uasort($currencies, function($a, $b) {
-            return strcmp($a, $b);
-        });
-
         return $currencies;
     }
 

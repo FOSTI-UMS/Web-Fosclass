@@ -473,10 +473,8 @@ define(['jquery', 'core/dragdrop', 'qtype_ddmarker/shapes', 'core/key_codes'], f
             var drag = $(draghome);
             var placeHolder = drag.clone();
             placeHolder.removeClass();
-            placeHolder.addClass('marker');
-            placeHolder.addClass('choice' + thisQ.getChoiceNoFromElement(drag));
-            placeHolder.addClass(thisQ.getDragNoClass(drag, false));
-            placeHolder.addClass('dragplaceholder');
+            placeHolder.addClass('marker choice' +
+                thisQ.getChoiceNoFromElement(drag) + ' dragno' + thisQ.getDragNo(drag) + ' dragplaceholder');
             drag.before(placeHolder);
         });
     };
@@ -492,26 +490,6 @@ define(['jquery', 'core/dragdrop', 'qtype_ddmarker/shapes', 'core/key_codes'], f
     };
 
     /**
-     * Get the drag number prefix of a drag.
-     *
-     * @param {jQuery} drag the drag.
-     * @param {Boolean} includeSelector include the CSS selector prefix or not.
-     * @return {String} Class name
-     */
-    DragDropMarkersQuestion.prototype.getDragNoClass = function(drag, includeSelector) {
-        var className = 'dragno' + this.getDragNo(drag);
-        if (this.isInfiniteDrag(drag)) {
-            className = 'infinite';
-        }
-
-        if (includeSelector) {
-            return '.' + className;
-        }
-
-        return className;
-    };
-
-    /**
      * Get drag clone for a given drag.
      *
      * @param {jQuery} drag the drag.
@@ -519,7 +497,7 @@ define(['jquery', 'core/dragdrop', 'qtype_ddmarker/shapes', 'core/key_codes'], f
      */
     DragDropMarkersQuestion.prototype.getDragClone = function(drag) {
         return this.getRoot().find('.draghomes' + ' span.marker' +
-            '.choice' + this.getChoiceNoFromElement(drag) + this.getDragNoClass(drag, true) + '.dragplaceholder');
+            '.choice' + this.getChoiceNoFromElement(drag) + '.dragno' + this.getDragNo(drag) + '.dragplaceholder');
     };
 
     /**
@@ -577,21 +555,20 @@ define(['jquery', 'core/dragdrop', 'qtype_ddmarker/shapes', 'core/key_codes'], f
         var inputNode = this.getInput(drag),
             noOfDrags = Number(this.getClassnameNumericSuffix(inputNode, 'noofdrags')),
             displayedDragsInDropArea = this.getRoot().find('div.droparea .marker.choice' +
-                this.getChoiceNoFromElement(drag) + this.getDragNoClass(drag, true)).length,
+                this.getChoiceNoFromElement(drag) + '.dragno' + this.getDragNo(drag)).length,
             displayedDragsInDragHomes = this.getRoot().find('div.draghomes .marker.choice' +
-                this.getChoiceNoFromElement(drag) + this.getDragNoClass(drag, true)).not('.dragplaceholder').length;
+                this.getChoiceNoFromElement(drag) + '.dragno' + this.getDragNo(drag)).not('.dragplaceholder').length;
 
-        if ((this.isInfiniteDrag(drag) ||
-                !this.isInfiniteDrag(drag) && displayedDragsInDropArea < noOfDrags) && displayedDragsInDragHomes === 0) {
-            var dragClone = drag.clone();
-            dragClone.addClass('unneeded')
+        if (displayedDragsInDropArea < noOfDrags && displayedDragsInDragHomes === 0) {
+            var dragclone = drag.clone();
+            dragclone.addClass('unneeded')
                 .css('top', '')
                 .css('left', '')
                 .css('transform', '');
             this.getDragClone(drag)
                 .removeClass('active')
-                .after(dragClone);
-            questionManager.addEventHandlersToMarker(dragClone);
+                .after(dragclone);
+            questionManager.addEventHandlersToMarker(dragclone);
         }
     };
 
@@ -601,12 +578,11 @@ define(['jquery', 'core/dragdrop', 'qtype_ddmarker/shapes', 'core/key_codes'], f
      * @param {jQuery} drag the item to place.
      */
     DragDropMarkersQuestion.prototype.removeDragIfNeeded = function(drag) {
-        var dragsInHome = this.getRoot().find('div.draghomes .marker.choice' +
-            this.getChoiceNoFromElement(drag) + this.getDragNoClass(drag, true)).not('.dragplaceholder');
-        var displayedDrags = dragsInHome.length;
-        while (displayedDrags > 1) {
-            dragsInHome.first().remove();
-            displayedDrags--;
+        var displayeddrags = this.getRoot().find('div.draghomes .marker.choice' +
+            this.getChoiceNoFromElement(drag) + '.dragno' + this.getDragNo(drag)).not('.dragplaceholder').length;
+        if (displayeddrags > 1) {
+            this.getRoot().find('div.draghomes .marker.choice' +
+                this.getChoiceNoFromElement(drag) + '.dragno' + this.getDragNo(drag)).not('.dragplaceholder').first().remove();
         }
     };
 
@@ -653,15 +629,6 @@ define(['jquery', 'core/dragdrop', 'qtype_ddmarker/shapes', 'core/key_codes'], f
             'transform': 'scale(' + bgRatio + ')',
             'transform-origin': type
         });
-    };
-
-    /**
-     * Check if the given drag is in infinite mode or not.
-     *
-     * @param {jQuery} drag The drag item need to check.
-     */
-    DragDropMarkersQuestion.prototype.isInfiniteDrag = function(drag) {
-        return drag.hasClass('infinite');
     };
 
     /**

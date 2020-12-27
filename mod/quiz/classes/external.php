@@ -902,7 +902,6 @@ class mod_quiz_external extends external_api {
                     It will be returned only if the user is allowed to see it.', VALUE_OPTIONAL),
                 'maxmark' => new external_value(PARAM_FLOAT, 'the maximum mark possible for this question attempt.
                     It will be returned only if the user is allowed to see it.', VALUE_OPTIONAL),
-                'settings' => new external_value(PARAM_RAW, 'Question settings (JSON encoded).', VALUE_OPTIONAL),
             ),
             'The question data. Some fields may not be returned depending on the quiz display settings.'
         );
@@ -928,7 +927,6 @@ class mod_quiz_external extends external_api {
         foreach ($attemptobj->get_slots($page) as $slot) {
             $qtype = $attemptobj->get_question_type_name($slot);
             $qattempt = $attemptobj->get_question_attempt($slot);
-            $questiondef = $qattempt->get_question(true);
 
             // Get response files (for questions like essay that allows attachments).
             $responsefileareas = [];
@@ -950,9 +948,6 @@ class mod_quiz_external extends external_api {
                 }
             }
 
-            // Check display settings for question.
-            $settings = $questiondef->get_question_definition_for_external_rendering($qattempt, $displayoptions);
-
             $question = array(
                 'slot' => $slot,
                 'type' => $qtype,
@@ -962,8 +957,7 @@ class mod_quiz_external extends external_api {
                 'responsefileareas' => $responsefileareas,
                 'sequencecheck' => $qattempt->get_sequence_check_count(),
                 'lastactiontime' => $qattempt->get_last_step()->get_timecreated(),
-                'hasautosavedstep' => $qattempt->has_autosaved_step(),
-                'settings' => !empty($settings) ? json_encode($settings) : null,
+                'hasautosavedstep' => $qattempt->has_autosaved_step()
             );
 
             if ($attemptobj->is_real_question($slot)) {

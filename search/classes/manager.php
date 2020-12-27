@@ -823,8 +823,8 @@ class manager {
             }
         }
 
-        // Add all supported block contexts for course contexts that user can access, in a single query for performance.
-        if (!empty($areasbylevel[CONTEXT_BLOCK]) && !empty($coursecontextids)) {
+        // Add all supported block contexts, in a single query for performance.
+        if (!empty($areasbylevel[CONTEXT_BLOCK])) {
             // Get list of all block types we care about.
             $blocklist = [];
             foreach ($areasbylevel[CONTEXT_BLOCK] as $areaid => $searchclass) {
